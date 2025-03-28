@@ -1,0 +1,58 @@
+1
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error
+import pandas as pds
+import matplotlib.pyplot as plt2022
+dataframe = pds.read_csv('https://raw.githubusercontent.com/chihleebobo/0511/main/house.csv')
+print(dataframe.head())
+
+2
+print(dataframe.isnull().values.sum())
+print("本資料中，有多少筆資料:", dataframe.shape)
+print("excel中之欄位名稱，分別為:", dataframe.keys())
+print("本資料中第一筆之內容:", dataframe.iloc[0,:])
+print("本資料中第一筆之預測目標:",dataframe['price'][0])
+
+3
+dataframe.age = 2024 - dataframe.yr_built
+plt2024.scatter(dataframe.bedrooms, dataframe.price,  color='red')
+plt2024.xlabel("Number of rooms")
+plt2024.ylabel("House price")
+plt2024.show()
+plt2024.scatter(dataframe.age, dataframe.price,  color='blue')
+plt2024.xlabel("Age of house")
+plt2024.ylabel("House price")
+plt2024.show()
+
+4
+x = dataframe.drop(['price','id','date','yr_built','zipcode','lat','long'],axis=1)
+y = dataframe['price']/10000
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
+print("原始資料庫的維度分別是:", dataframe.shape)
+print("訓練集的維度大小:   ", x_train.shape)
+print("測試集的維度大小:   ", x_test.shape)
+
+5
+model0330 = LinearRegression()
+model0330.fit(x_train, y_train)
+print ('係數_Coefficients: ', model0330.coef_)
+print ('截距_Intercept: ',model0330.intercept_)
+
+6
+predict_0330 = model0330.predict(x_test)
+score0330 = mean_squared_error(predict_0330, y_test)
+print("Mean_Square_Error: ", score0330)
+
+7
+x_train_RM = x_train.loc[:,['bedrooms']]
+x_test_RM  = x_test.loc[:,['bedrooms']]
+model0330_2 = LinearRegression()
+model0330_2.fit(x_train_RM, y_train)
+print("訓練集的維度大小:   ", x_train_RM.shape)
+print("測試集的維度大小:   ", x_test_RM.shape)
+print ('係數: ', model0330_2.coef_)
+print ('截距: ',model0330_2.intercept_)
+pred0330_2 = model0330_2.predict(x_test_RM)
+score0330_2 = mean_squared_error(pred0330_2, y_test)
+print("Mean_Square_Error: ", score0330_2)
